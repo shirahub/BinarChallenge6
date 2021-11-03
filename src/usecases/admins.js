@@ -5,8 +5,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 async function login(username, password) {
-  console.log("MASUK SINI");
-
   let admin = await adminRepo.getAdmin(username);
 
   return new Promise(async (resolve, reject) => {
