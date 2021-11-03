@@ -1,1 +1,53 @@
 <h1>Dashboard Users</h1>
+
+<div>
+  <div>
+    <ul>
+      <li>
+        <a href="/users/create">Add User</a>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <% if(data.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Username</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Email</th>
+          <th scope="col">Created Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i = 0; i< data.length; i++) { %>
+        <tr>
+          <th scope="row"><%= (i+1) %></th>
+          <td><%= data[i].username%></td>
+          <td><%= data[i].userBiodata.fullName%></td>
+          <td><%= data[i].userBiodata.phoneNumber%></td>
+          <td><%= data[i].userBiodata.email%></td>
+          <td><%= data[i].createdAt%></td>
+
+          <td>
+            <a href="../users/edit/<%=data[i].id%>">Edit</a>
+            <a
+              onclick="return alert('Are You sure?')"
+              href="../users/users/<%=data[i].id%>"
+              >Delete</a
+            >
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <% } %>
+
+    <!-- if result is empty -->
+    <% if(!data.length) { %>
+    <p class="text-center">No users found!</p>
+    <% } %>
+  </div>
+</div>

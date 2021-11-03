@@ -4,6 +4,8 @@ const apiUsers = require("./src/controllers/users");
 
 var morgan = require("morgan");
 var path = require("path");
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 const express = require("express");
 const app = express();
@@ -25,8 +27,18 @@ app.get("/", (req, res) => {
   res.render("login.ejs", { url: "/api/admins/login" });
 });
 
-app.get("/dashboard", (req, res) => {
-  res.render("dashboard.ejs");
+app.get("/dashboard", async (req, res) => {
+  fetch("http://localhost:8001/api/users").then(async (resApi) => {
+    try {
+      const response = await resApi;
+      const data = await response.json();
+      if (data) {
+        res.render("dashboard.ejs", { data: data });
+      }
+    } catch (err) {
+      res.render("dashboard.ejs", { data: [] });
+    }
+  });
 });
 
 app.response.send = function sendOverWrite(body) {

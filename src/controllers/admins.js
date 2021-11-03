@@ -12,7 +12,6 @@ api.post(
   body("username").isString().notEmpty(),
   body("password").isString().notEmpty(),
   function (req, res, next) {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return apiStatus(res, new CustomError(StatusCodes.BAD_REQUEST));
