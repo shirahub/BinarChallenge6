@@ -1,5 +1,6 @@
 const apiStatus = require("./src/lib/api_status");
 const apiAdmins = require("./src/controllers/admins");
+const apiUsers = require("./src/controllers/users");
 var morgan = require("morgan");
 
 const express = require("express");
@@ -30,6 +31,7 @@ app.use(
 
 app.use(express.json());
 app.use("/api/admins", apiAdmins);
+app.use("/api/users", apiUsers);
 
 app.use("/api/*", function (req, res) {
   apiStatus(res, { message: "API NOT FOUND" }, 404);

@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.hasOne(models.User);
+      this.hasOne(models.UserBiodata, {
+        as: "userBiodata",
+        tableName: "user_biodata",
+        foreignKey: "userId",
+      });
       this.hasMany(models.UserGameHistory);
     }
   }
@@ -21,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "User",
       tableName: "users",
+      underscored: true,
+      freezeTableName: true,
     }
   );
   return User;

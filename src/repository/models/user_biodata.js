@@ -7,9 +7,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      this.belongsTo(models.User);
-    }
+    static associate(models) {}
   }
   UserBiodata.init(
     {
@@ -23,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "UserBiodata",
       tableName: "user_biodata",
       underscored: true,
+      freezeTableName: true,
     }
   );
   return UserBiodata;
