@@ -1,6 +1,7 @@
 const apiStatus = require("./src/lib/api_status");
 const apiAdmins = require("./src/controllers/admins");
 const apiUsers = require("./src/controllers/users");
+const bodyParser = require("body-parser");
 
 var morgan = require("morgan");
 var path = require("path");
@@ -21,10 +22,12 @@ morgan.token("request-body", (req, res) => {
 
 morgan.token("response-body", (req, res) => res.resBody);
 
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view-engine", "ejs");
 app.get("/", (req, res) => {
-  res.render("login.ejs", { url: "/api/admins/login" });
+  res.render("login.ejs");
 });
 
 app.get("/dashboard", async (req, res) => {
@@ -34,9 +37,47 @@ app.get("/dashboard", async (req, res) => {
       const data = await response.json();
       if (data) {
         res.render("dashboard.ejs", { data: data });
+      } else {
+        res.render("dashboard.ejs", { data: [] });
       }
     } catch (err) {
       res.render("dashboard.ejs", { data: [] });
+    }
+  });
+});
+
+app.get("/users/create", async (req, res) => {
+  res.render("create-user.ejs");
+});
+
+app.get("/users/edit/:id", async (req, res) => {
+  let url = "http://localhost:8001/api/users/" + req.params.id;
+  fetch(url, {
+    method: "GET",
+  }).then(async (resApi) => {
+    try {
+      const response = await resApi;
+      const data = await response.json();
+      if (data) {
+        res.render("edit-user.ejs", { id: req.params.id, data });
+      }
+    } catch (err) {
+      res.render("edit-user.ejs", { id: req.params.id, data });
+    }
+  });
+});
+
+app.get("/users/delete/:id", async (req, res) => {
+  let url = "http://localhost:8001/api/users/" + req.params.id;
+  fetch(url, {
+    method: "DELETE",
+  }).then(async (resApi) => {
+    try {
+      const response = await resApi;
+      const data = await response.json();
+      res.redirect(301, "/dashboard");
+    } catch (err) {
+      res.redirect(301, "/dashboard");
     }
   });
 });

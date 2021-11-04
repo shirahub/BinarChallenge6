@@ -1,0 +1,81 @@
+<div>
+  <div>Edit User</div>
+  <div>
+    <form>
+      <div>
+        <label for="username">Username</label>
+        <input
+          id="username"
+          name="username"
+          value="<%= data.username %>"
+          required
+        />
+      </div>
+      <div>
+        <label for="fullName">Full Name</label>
+        <input
+          id="fullName"
+          name="fullName"
+          value="<%= data.userBiodata.fullName %>"
+          required
+        />
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          value="<%= data.userBiodata.email %>"
+          required
+        />
+      </div>
+      <div>
+        <label for="phoneNumber">Phone Number</label>
+        <input
+          id="phoneNumber"
+          name="phoneNumber"
+          value="<%= data.userBiodata.phoneNumber %>"
+          required
+        />
+      </div>
+      <div>
+        <input onClick="editUser(event)" type="submit" value="Edit" />
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const editUser = (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const fullName = document.getElementById("fullName").value;
+    const email = document.getElementById("email").value;
+    const phoneNumber = document.getElementById("phoneNumber").value;
+
+    const option = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+      body: JSON.stringify({
+        username: username,
+        fullName: fullName,
+        email: email,
+        phoneNumber: phoneNumber,
+      }),
+    };
+
+    fetch("/api/users/" + "<%= id %>", option).then(async (res) => {
+      const response = await res;
+      const data = await response.json();
+      console.log;
+      if (data) {
+        location.href = "/dashboard";
+      } else {
+        alert("Create User Failed");
+      }
+    });
+  };
+</script>

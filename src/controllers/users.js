@@ -18,4 +18,49 @@ api.get("/", function (req, res, next) {
     });
 });
 
+api.get("/:id", function (req, res, next) {
+  userHandler
+    .getUserDetail(req.params.id)
+    .then((result) => {
+      apiStatus(res, result, 200);
+    })
+    .catch((err) => {
+      apiStatus(res, err);
+    });
+});
+
+api.post("/", function (req, res, next) {
+  userHandler
+    .createNewUser(req.body)
+    .then((result) => {
+      apiStatus(res, result, 200);
+    })
+    .catch((err) => {
+      apiStatus(res, err);
+    });
+});
+
+api.patch("/:userId", function (req, res, next) {
+  req.body.userId = req.params.userId;
+  userHandler
+    .editUser(req.body)
+    .then((result) => {
+      apiStatus(res, result, 200);
+    })
+    .catch((err) => {
+      apiStatus(res, err);
+    });
+});
+
+api.delete("/:id", function (req, res, next) {
+  userHandler
+    .deleteUser(req.params.id)
+    .then((result) => {
+      apiStatus(res, result, 200);
+    })
+    .catch((err) => {
+      apiStatus(res, err);
+    });
+});
+
 module.exports = api;
